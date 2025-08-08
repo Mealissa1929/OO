@@ -1,0 +1,141 @@
+<?php
+
+
+class livro {
+    private $titulo;
+    private $autor;
+    private $genero;
+    private $quantidadePag;
+    private $preco;
+
+
+    public function __toString()
+    {
+        return "Livro: $this->titulo, Autor: $this->autor, Genero
+        : $this->genero, Paginas: $this->quantidadePag, Preco
+        : $this->preco";
+    }
+    
+    
+    public function getTitulo()
+    {
+        return $this->titulo;
+    }
+
+    public function setTitulo($titulo): self
+    {
+        $this->titulo = $titulo;
+
+        return $this;
+    }
+
+    public function getAutor()
+    {
+        return $this->autor;
+    }
+
+    public function setAutor($autor): self
+    {
+        $this->autor = $autor;
+
+        return $this;
+    }
+
+    public function getGenero()
+    {
+        return $this->genero;
+    }
+
+    public function setGenero($genero): self
+    {
+        $this->genero = $genero;
+
+        return $this;
+    }
+
+    public function getQuantidadePag()
+    {
+        return $this->quantidadePag;
+    }
+
+    public function setQuantidadePag($quantidadePag): self
+    {
+        $this->quantidadePag = $quantidadePag;
+
+        return $this;
+    }
+
+    public function getPreco()
+    {
+        return $this->preco;
+    }
+
+    public function setPreco($preco): self
+    {
+        $this->preco = $preco;
+
+        return $this;
+    }
+}
+$livros = array();
+$op;
+do {
+    echo "\n------Menu-----";
+    echo "\n1 - Cadastrar Livro\n";
+    echo "\n2 - Listar Livros\n";
+    echo "\n3 - Buscar Livro\n";
+    echo "\n4 - Total gasto\n";
+    echo "\n0 - Sair\n";
+    echo "\n--------------";
+    $op = readline("\nDigite a opção desejada: ");
+
+    switch($op){
+        case 1:
+            $livro = new Livro();
+            $livro->setTitulo(readline("Informe o título: "));
+            $livro->setAutor(readline("Informe o autor: "));
+            $livro->setGenero(readline("Informe o gênero: "));
+            $livro->setQuantidadePag(readline("Informe a quantidade de páginas: "));
+            $livro->setPreco(readline("Informe o preço: "));
+            array_push($livros, $livro);
+            break;
+        
+        case 2:
+            foreach ($livros as $livro) {
+              echo $livro;
+            }
+            break;
+
+        case 3:
+            $indice = readline("Informe o índice do livro que deseja buscar: ");
+            if ($indice >= 0 && $indice < count($livros)) {
+                echo $livros;
+            } else {
+                 echo "\nÍndice inválido\n"; 
+            }
+
+                break;
+        
+        case 4:
+            $total = 0;
+            foreach ($livros as $livro) {
+                $total += $livro->getPreco();
+            }
+                echo "\nTotal gasto com livros: $total\n";
+                break;
+
+        case 0:
+            echo "\nObrigado por usar o sistema!\n";
+            break;
+
+        default:
+            echo "\n Opção inválida";
+            break;
+    
+
+} 
+}  while($op != 0);
+
+
+                                
+                            
