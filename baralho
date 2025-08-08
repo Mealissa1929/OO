@@ -1,0 +1,52 @@
+<?php
+
+class Carta{
+private $nome;
+private $numero;
+private $dica;
+
+public function getNome()
+{
+return $this->nome;
+}
+
+public function setNome($nome): self
+{
+$this->nome = $nome;
+
+return $this;
+}
+
+public function getNumero()
+{
+return $this->numero;
+}
+
+public function setNumero($numero): self
+{
+$this->numero = $numero;
+
+return $this;
+}
+
+public function getDica()
+{
+return $this->dica;
+}
+
+public function setDica($dica): self
+{
+$this->dica = $dica;
+
+return $this;
+}
+}
+
+
+$nomes = array("paus", "espada", "ouro");
+$baralho = array();
+for ($i=0; $i <10 ; $i++) { 
+    $carta = new Carta;
+    $carta->setNome(array_rand($nomes));
+    array_push($carta, $baralho)
+}
