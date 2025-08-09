@@ -34,7 +34,7 @@ class Carta {
 }
 
 $nomes = array("paus", "espadas", "ouros", "copas");
-$numeros = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+$numeros = array("2", "3", "4", "5", "6", "7", "8", "9", "10");
 $baralho = array();
 $cartasUsadas = array(); 
 
