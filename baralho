@@ -1,12 +1,12 @@
-
 <?php
 
-class Carta
+Class Carta
 {
     private $nome;
     private $numero;
     private $dica;
     private $identificador;
+
 
     public function getNome()
     {
@@ -16,6 +16,7 @@ class Carta
     public function setNome($nome): self
     {
         $this->nome = $nome;
+
         return $this;
     }
 
@@ -27,6 +28,7 @@ class Carta
     public function setNumero($numero): self
     {
         $this->numero = $numero;
+
         return $this;
     }
 
@@ -38,6 +40,7 @@ class Carta
     public function setDica($dica): self
     {
         $this->dica = $dica;
+
         return $this;
     }
 
@@ -49,6 +52,7 @@ class Carta
     public function setIdentificador($identificador): self
     {
         $this->identificador = $identificador;
+
         return $this;
     }
 
@@ -58,55 +62,89 @@ $nomes = array("paus", "espadas", "ouros", "copas");
 $numeros = array("2", "3", "4", "5", "6", "7", "8", "9", "10");
 $baralho = array();
 $cartasUsadas = array();
-$indicador = 0;
 
 for ($i = 0; $i < 10; $i++) {
     do {
-        $indicador++;
         $nome = $nomes[array_rand($nomes)];
         $numero = $numeros[array_rand($numeros)];
-        $ID_carta = $numero . " de " . $nome;
-        if ($numero % 2 == 0) {
-            $dica_numero = "O número é par";
-        } else {
-            $dica_numero = "O número é impar";
-        }
+        $ID_carta = $numero . "de" . $nome;
 
-        if ($nome == "copas") {
-            $dica_nome = "O naipe é copas";
-        } elseif ($nome == "espadas") {
-            $dica_nome = "O naipe é espadas";
-        } elseif ($nome == "ouros") {
-            $dica_nome = "O naipe é ouros";
-        } else {
-            $dica_nome = "O naipe é paus";
-        }
-        if(in_array ($ID_carta, $cartasUsadas)){
-            $indicador--;
-        }
-    } while (in_array($ID_carta, $cartasUsadas));  // Verifica se a carta já foi usada
+         if((int)$numero % 2 === 0){
+            $dica_numero = "O número é par";
+        } else { $dica_numero = "O número é impar"; }
+
+        $dica_nome = "O naipe é $nome";
+
+    } while (in_array($ID_carta, $cartasUsadas));
 
     $cartasUsadas[] = $ID_carta;
 
-    $sorteio_dica = rand(1, 2); // Sorteia um numero entre 1 e 2
+    $sorteio_dica = rand(1, 2);
+
+    if ($sorteio_dica == 1){
+        $dica = $dica_numero;
+    } else {
+        $dica = $dica_nome;
+    }
 
     $carta = new Carta();
     $carta->setNome($nome);
     $carta->setNumero($numero);
-    $carta->setIdentificador($indicador);
-    if ($sorteio_dica == 1) {
-        $carta->setDica($dica_nome);
-    } else {
-        $carta->setDica($dica_numero);
+    $carta->setIdentificador($ID_carta);
+    $carta->setDica($dica);
+
+    $baralho[] = $carta;
+}
+
+$cartaSecreta = $baralho[array_rand($baralho)];
+
+echo "=== Cartas do Baralho ===\n";
+foreach ($baralho as $carta) {
+    echo "Carta: " . $carta->getNumero() . " de " . $carta->getNome() . "\n";
+}
+echo "=========================\n\n";
+
+$pontos = 200;
+
+for ($i = 0; $i < 10; $i++) {
+    echo "\nTentativa " . $i + 1 . " | Pontos: $pontos\n";
+    echo "1 - Dar um chute\n";
+    echo "2 - Desistir\n";
+    echo "3 - Obter uma dica (-10 pontos)\n";
+    echo "Escolha uma opção: \n";
+
+    $decisao = trim(readline());
+
+    if ($decisao != 1 && $decisao!= 2 && $decisao != 3) {
+        echo "Opção inválida! Tente novamente.\n";
+        $i--; 
+        continue;
     }
 
+    if ($decisao == '1') {
+        $chute = trim(readline("Digite seu chute (ex: 5 de ouros): "));
+        $chute = strtolower(str_replace(' ', '', $chute)); // Remove espaços e converte para minúsculas para padronizar o chute
 
-    array_push($baralho, $carta);
+        if ($chute == strtolower($cartaSecreta->getIdentificador())) {
+            echo "\nParabéns, você acertou\n";
+            echo "Você ganhou $pontos pontos\n";
+            exit;
+        } else {
+            echo "Chute incorreto\n";
+            $pontos -= 10;
+        }
+
+    } elseif ($decisao == '2') {
+        echo "\nVocê desistiu. A carta era: " . $cartaSecreta->getNumero() . " de " . $cartaSecreta->getNome() . "\n";
+        exit;
+
+    } elseif ($decisao == '3') {
+        echo "Dica: " . $cartaSecreta->getDica() . "\n";
+        $pontos -= 10;
+    }
+
 }
 
-echo "As cartas do baralho são:\n";
-$indice = 1;
-foreach ($baralho as $carta) {
-    echo "carta $indice: " . $carta->getNumero() . " de " . $carta->getNome() . "\n";
-    $indice++;
-}
+echo "\nSuas tentativas acabaram\n";
+echo "A carta secreta era: " . $cartaSecreta->getNumero() . " de " . $cartaSecreta->getNome() . "\n";
+
